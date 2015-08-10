@@ -29,7 +29,7 @@ _See examples folder._
 var smp = require('smp');
 
 var framed = smp.encode([new Buffer('hello world')]);
-console.log('framed', framed);
+console.log('framed', framed);    // <Buffer 01 00 0b 68 65 6c 6c 6f 20 77 6f 72 6c 64>
 
 var message = smp.decode(framed.toBuffer());
 console.log('message', message);
