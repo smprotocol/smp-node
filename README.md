@@ -5,7 +5,7 @@ Streaming Message Protocol for Node.js.
 The Streaming Message Protocol (SMP) is a lightweight and efficient data framing protocol for 
 exchanging messages across network transports like: TCP, TLS, WebSocket. 
 
-_To read the [Sreaming Message Protocol Specification](http://smprotocol.github.io/)._
+_To read the [Streaming Message Protocol Specification](http://smprotocol.github.io/)._
 
 SMP is a binary protocol allowing any binary data format to be used. You can of cause use non 
 binary data such as text, JSON; by converting to a buffer. You can also encode multiple arguments 
