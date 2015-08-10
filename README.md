@@ -1,4 +1,4 @@
-# Streaming Message Protocol for Node.js [![Build Status](https://api.travis-ci.org/fluidecho/smp.png)](https://travis-ci.org/fluidecho/smp)
+# Streaming Message Protocol for Node.js [![Build Status](https://api.travis-ci.org/smprotocol/smp-node.png)](https://travis-ci.org/smprotocol/smp-node)
 
 Streaming Message Protocol for Node.js.  
 
