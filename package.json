@@ -1,0 +1,43 @@
+{
+  "name": "smp",
+  "description": "Streaming Message Protocol.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "homepage": "https://github.com/fluidecho/smp-node",
+  "author": "Mark W. B. Ashcroft <mark@fluidecho.com> (http://fluidecho.com)",
+  "contributors": [
+    "Mark W. B. Ashcroft <mark@fluidecho.com>"
+  ],
+  "dependencies": {
+    "preview": "~0.1.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fluidecho/smp-node.git"
+  },
+  "bugs": {
+    "url": "http://github.com/fluidecho/smp-node/issues",
+    "email": "mail@fluidecho.com"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "message frame",
+    "message framing",
+    "frame",
+    "framing",
+    "streaming",
+    "streaming data",
+    "messaging",
+    "protocol"
+  ],
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "node test.js"
+  }
+}

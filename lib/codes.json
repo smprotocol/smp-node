@@ -1,0 +1,20 @@
+{
+  "codes": [
+    { "code": 0, "description": "WHOLE MESSAGE" },
+    { "code": 1, "description": "NEW FRAME" },
+    { "code": 2, "description": "CONTINUING FRAME" },
+    { "code": 3, "description": "LAST FRAME" },
+    { "code": 4, "description": "INFORMATION" },
+    { "code": 5, "description": "ERROR" },
+    { "code": 6, "description": "HEARTBEAT" },
+    { "code": 7, "description": "STOP" },
+    { "code": 8, "description": "PAUSE" },
+    { "code": 9, "description": "RESUME" }, 
+    { "code": 10, "description": "RESERVED" },
+    { "code": 11, "description": "RESERVED" },
+    { "code": 12, "description": "RESERVED" },
+    { "code": 13, "description": "USER DEFINED" },
+    { "code": 14, "description": "USER DEFINED" },      
+    { "code": 15, "description": "USER DEFINED" }  
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "errors": [
+    { "code": 400, "message": "Invalid Framing (MESSAGE or FRAME framing was badly formed)." },
+    { "code": 408, "message": "Timedout (Receiver timedout receiving the MESSAGE or FRAME)." },
+    { "code": 411, "message": "Invalid Syntax (MESSAGE or FRAME protocol syntax was badly formed)." },
+    { "code": 413, "message": "Too Big (MESSAGE or FRAME size exceeded the receivers MAX-MESSAGE-SIZE)." },
+    { "code": 414, "message": "Argument Too Big (exceeded acceptable ARGUMENT size)." },
+    { "code": 415, "message": "Invalid Code." },
+    { "code": 416, "message": "Buffer Too Big (MESSAGE or FRAME size exceeded the receivers MAX-BUFFER-SIZE)." },            
+    { "code": 420, "message": "ID Conflict (The FRAME ID is in conflict with another or invalid)." },
+    { "code": 421, "message": "FRAME# Conflict (The FRAME FRAME# is in conflict with another or invalid)." },
+    { "code": 500, "message": "Internal Receiver Error (The unexpected has happened to the receiver and the MESSAGE or FRAMEs status is unknown)." },
+    { "code": 501, "message": "Receiver unexpectedly dropped MESSAGE or FRAME, please send again." },
+    { "code": 529, "message": "Too Busy (Receiver is too busy). Sender should mitigate sending messages." }
+  ]
+}

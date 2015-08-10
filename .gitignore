@@ -1,0 +1,6 @@
+node_modules
+testing
+dev
+keys
+npm-debug.log
+*.pem
