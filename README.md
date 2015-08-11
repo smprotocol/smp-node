@@ -8,11 +8,21 @@ exchanging messages across network transports like: TCP, TLS, WebSocket.
 _To read the [Streaming Message Protocol Specification](http://smprotocol.github.io/)._
 
 SMP is a binary protocol allowing any binary data format to be used. You can of cause use non 
-binary data such as text, JSON; by converting to a buffer. You can also encode multiple arguments 
+binary data such as text, JSON - by converting to a buffer. You can also encode multiple arguments 
 within a single message, for example: binary from a photo and JSON about that photo, as separate 
 arguments. This means you don't have to use serialization to combine binary and text based data
 together into a single argument.
- 
+
+SMP solves three data scenarios when sending messages across a network:
+
+1. A whole small message.
+2. A large whole message, called frames.
+3. A never ending message, also frames.
+
+SMP makes frames of large or never ending messages efficiently sized to best fit over the network, 
+frames are assigned a unique ID and order number. This approach allows asynchronously sent frames - 
+you could even send frames to different receivers, to be reassembled later.
+
 
 ## Installation
 
@@ -23,7 +33,7 @@ npm install smp
 
 ## Example
 
-_See examples folder._
+_See examples folder. To print use preview, eg: node/examples/message.js --preview_
 
 ```js
 var smp = require('smp');
@@ -62,7 +72,7 @@ var server = net.createServer(function(sock){
 server.listen(8888);
 
 var client = net.connect(8888);
-client.write(smp.encode([new Buffer('abcdefghijklmnopqrstuvwxyz')], {max_message_size: 10, id: 555, first: true}).toBuffer());
+client.write(smp.encode([new Buffer('abcdefghijklmnopqrstuvwxyz'), new Buffer('0123456789')], {max_message_size: 10, id: 555, first: true}).toBuffer());
 
 ```
 
