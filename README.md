@@ -31,7 +31,7 @@ npm install smp
 ```
 
 
-## Example
+## Examples
 
 _See examples folder. To print use preview, eg: node examples/message.js --preview_
 
@@ -51,7 +51,7 @@ console.log('payload:', payload);
 Stream through TCP.
 
 ```js
-var net = require('net');
+var net = require('net');    // TCP
 var smp = require('smp');
 
 var server = net.createServer(function(sock){
@@ -73,6 +73,42 @@ server.listen(8888);
 
 var client = net.connect(8888);
 client.write(smp.encode([new Buffer('abcdefghijklmnopqrstuvwxyz'), new Buffer('0123456789')], {max_message_size: 10, id: 555, first: true}).toBuffer());
+
+```
+Using WebSockets, [npm install naked-websocket](https://github.com/fluidecho/naked-websocket).
+
+```js
+var nws = require('naked-websocket');
+var smp = require('smp');
+
+var server = nws.createServer({protocol: 'ws'}, function(socket) {
+
+  var stream = smp.StreamParser;
+  var parser = new stream();
+
+  // can use parser.on( 'frame', 'message', 'information', etc.
+
+  parser.on('message', function(message){
+    console.log('message', message);
+    console.log('payload', message.args[0].toString());
+  });
+
+  socket.pipe(parser);
+  
+}).listen(8888);
+
+
+var options = {
+  protocol: 'ws',
+  hostname: '127.0.0.1',
+  port: 8888
+};
+
+var client = nws.connect(options, function(socket) {
+
+  socket.write(smp.encode([ new Buffer('hello world') ]).toBuffer());
+  
+});
 
 ```
 

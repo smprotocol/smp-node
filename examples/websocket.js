@@ -44,7 +44,7 @@ var options = {
   protocol: 'ws',
   hostname: '127.0.0.1',
   port: 8888,
-  path: '/foo/bar/?_protocol=amp'
+  path: '/foo/bar/'
 };
 
 var client = nws.connect(options, function(socket) {
