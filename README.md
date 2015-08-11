@@ -33,7 +33,7 @@ npm install smp
 
 ## Example
 
-_See examples folder. To print use preview, eg: node/examples/message.js --preview_
+_See examples folder. To print use preview, eg: node examples/message.js --preview_
 
 ```js
 var smp = require('smp');
