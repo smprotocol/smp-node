@@ -123,15 +123,14 @@ _To read the [Streaming Message Protocol Specification](http://smprotocol.github
 +------+-------------------+-----------------------------------------------------------------------+
 | CODE | DESCRIPTION       | NOTES                                                                 |
 +------+-------------------+-----------------------------------------------------------------------+
-|    0 | WHOLE MESSAGE     | Payload data, a whole complete MESSAGE, when ARGUMENTS PAYLOAD size &lt;    | 
+|    0 | WHOLE MESSAGE     | Payload data, a whole complete MESSAGE, when ARGUMENTS PAYLOAD size < | 
 |      |                   | MAX-MESSAGE-SIZE.                                                     |
 +------+-------------------+-----------------------------------------------------------------------+
-|    1 | NEW FRAME         | Payload data, new FRAME, code sent once to every receiver, or CODE 3  |
-|      |                   | if the last FRAME.                                                    |
+|    1 | NEW FRAME         | Payload data, a new FRAME.                                            |
 +------+-------------------+-----------------------------------------------------------------------+
 |    2 | CONTINUING FRAME  | Payload data, a middle FRAME.                                         |
 +------+-------------------+-----------------------------------------------------------------------+
-|    3 | LAST FRAME        | Payload data, the last FRAME sent.                                    |
+|    3 | LAST FRAME        | Payload data, the last FRAME.                                         |
 +------+-------------------+-----------------------------------------------------------------------+
 |    4 | INFOMATION        | Information, contained within the PAYLOAD.                            |
 +------+-------------------+-----------------------------------------------------------------------+
