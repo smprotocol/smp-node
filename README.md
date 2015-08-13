@@ -119,6 +119,7 @@ SMP uses meta codes within each message/frame to define meaning between the send
 
 _To read the [Streaming Message Protocol Specification](http://smprotocol.github.io/)._
 
+```
 +------+-------------------+-----------------------------------------------------------------------+
 | CODE | DESCRIPTION       | NOTES                                                                 |
 +------+-------------------+-----------------------------------------------------------------------+
@@ -159,6 +160,7 @@ _To read the [Streaming Message Protocol Specification](http://smprotocol.github
 +------+-------------------+-----------------------------------------------------------------------+
 |   15 | USER DEFINED      | User can set their own custom code.                                   |
 +------+-------------------+-----------------------------------------------------------------------+
+```
 
 _See /examples/infos.js for examples._
 
