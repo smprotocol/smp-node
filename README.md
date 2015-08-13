@@ -113,6 +113,56 @@ var client = nws.connect(options, function(socket) {
 ```
 
 
+## SMP Meta Codes
+
+SMP uses meta codes within each message/frame to define meaning between the sender and receiver.
+
+_To read the [Streaming Message Protocol Specification](http://smprotocol.github.io/)._
+
++------+-------------------+-----------------------------------------------------------------------+
+| CODE | DESCRIPTION       | NOTES                                                                 |
++------+-------------------+-----------------------------------------------------------------------+
+|    0 | WHOLE MESSAGE     | Payload data, a whole complete MESSAGE, when ARGUMENTS PAYLOAD size &lt;    | 
+|      |                   | MAX-MESSAGE-SIZE.                                                     |
++------+-------------------+-----------------------------------------------------------------------+
+|    1 | NEW FRAME         | Payload data, new FRAME, code sent once to every receiver, or CODE 3  |
+|      |                   | if the last FRAME.                                                    |
++------+-------------------+-----------------------------------------------------------------------+
+|    2 | CONTINUING FRAME  | Payload data, a middle FRAME.                                         |
++------+-------------------+-----------------------------------------------------------------------+
+|    3 | LAST FRAME        | Payload data, the last FRAME sent.                                    |
++------+-------------------+-----------------------------------------------------------------------+
+|    4 | INFOMATION        | Information, contained within the PAYLOAD.                            |
++------+-------------------+-----------------------------------------------------------------------+
+|    5 | ERROR             | Error, first ARGUMENT is a error code (3.2.), second ARGUMENT is the  |
+|      |                   | error message (3.2.).                                                 |
++------+-------------------+-----------------------------------------------------------------------+
+|    6 | HEARTBEAT         | Heartbeat, with optional PAYLOAD data.                                |
++------+-------------------+-----------------------------------------------------------------------+
+|    7 | STOP              | Action, stop sending or receiving MESSAGES or FRAMES, will            |
+|      |                   | immediately close socket connection.                                  |
++------+-------------------+-----------------------------------------------------------------------+
+|    8 | PAUSE             | Action, pause sending or receiving MESSAGES or FRAMES.                |
++------+-------------------+-----------------------------------------------------------------------+
+|    9 | RESUME            | Action, resume sending or receiving MESSAGES or FRAMES, with optional |
+|      |                   | PAYLOAD data.                                                         |
++------+-------------------+-----------------------------------------------------------------------+
+|   10 | RESERVED          | Reserved for future versions.                                         |
++------+-------------------+-----------------------------------------------------------------------+
+|   11 | RESERVED          | Reserved for future versions.                                         |
++------+-------------------+-----------------------------------------------------------------------+
+|   12 | RESERVED          | Reserved for future versions.                                         |
++------+-------------------+-----------------------------------------------------------------------+
+|   13 | USER DEFINED      | User can set their own custom code.                                   |
++------+-------------------+-----------------------------------------------------------------------+
+|   14 | USER DEFINED      | User can set their own custom code.                                   |
++------+-------------------+-----------------------------------------------------------------------+
+|   15 | USER DEFINED      | User can set their own custom code.                                   |
++------+-------------------+-----------------------------------------------------------------------+
+
+_See /examples/infos.js for examples._
+
+
 ## Options
 
 Encode options.
