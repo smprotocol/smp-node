@@ -11,12 +11,12 @@ SMP is a binary protocol allowing any binary data format to be used. You can of 
 binary data such as text, JSON - by converting to a buffer. You can also encode multiple arguments 
 within a single message, for example: binary from a photo and JSON about that photo, as separate 
 arguments. This means you don't have to use serialization to combine binary and text based data
-together into a single argument.
+together into a single argument - although you could if you want.
 
 SMP solves three data scenarios when sending messages across a network:
 
 1. A whole small message.
-2. A large whole message, called frames.
+2. A whole large message, called frames.
 3. A never ending message, also frames.
 
 SMP makes frames of large or never ending messages efficiently sized to best fit over the network, 
@@ -106,7 +106,7 @@ var options = {
 
 var client = nws.connect(options, function(socket) {
 
-  socket.write(smp.encode([ new Buffer('hello world') ]).toBuffer());
+  socket.write(smp.encode([new Buffer('hello world')]).toBuffer());
   
 });
 
@@ -117,8 +117,8 @@ var client = nws.connect(options, function(socket) {
 
 Encode options.
 ```
- max_message_size: number,   // byte size of a whole message, if greater will be frames of.
-               id: number,   // can set a ID for frames.
+ max_message_size: number,   // byte size of a whole message, if greater will be frames of (default: 1493).
+               id: number,   // can set a ID for frames, from 0 to 65535.
             first: boolean,  // if true and frames, frame[0] will be first frame (CODE:1).
          complete: boolean,  // if true and frames, frame[frames.length] will be last frame (CODE:3).
           toFrame: boolean   // if true will be frame even when size less than max_message_size.
