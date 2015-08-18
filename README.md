@@ -8,10 +8,10 @@ exchanging messages across network transports like: TCP, TLS, WebSocket.
 _To read the [Streaming Message Protocol Specification](http://smprotocol.github.io/)._
 
 SMP is a binary protocol allowing any binary data format to be used. You can of cause use non 
-binary data such as text, JSON - by converting to a buffer. You can also encode multiple arguments 
-within a single message, for example: binary from a photo and JSON about that photo, as separate 
-arguments. This means you don't have to use serialization to combine binary and text based data
-together into a single argument - although you could if you want.
+binary data such as text or JSON - by converting to a buffer. You can also encode multiple 
+arguments within a single message, for example: binary from a photo and JSON about that photo, as 
+separate arguments. This means you don't have to use serialization to combine binary and text based 
+data together into a single argument - although you could if you want.
 
 SMP solves three data scenarios when sending messages across a network:
 
@@ -173,6 +173,27 @@ Encode options.
             first: boolean,  // if true and frames, frame[0] will be first frame (CODE:1).
          complete: boolean,  // if true and frames, frame[frames.length] will be last frame (CODE:3).
           toFrame: boolean   // if true will be frame even when size less than max_message_size.
+```
+
+
+## Benchmarking
+
+_See bm folder to run benchmarking tests._
+
+### Results
+
+Using a WebSocket connection _[naked-websocket](https://github.com/fluidecho/naked-websocket)_ and 
+sending 200 byte [SMP messages](https://github.com/smprotocol/smp-node), I get over 300,000 messages per second.
+
+```
+---------------------------------------------
+| RESULTS ~
+---------------------------------------------
+|     median: 322,581 ops/s
+|       mean: 275,587 ops/s
+|      total: 2,750,084 ops in 9.979s
+|    through: 55.39 MB/s
+---------------------------------------------
 ```
 
 
