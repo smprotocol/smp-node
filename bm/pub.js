@@ -28,7 +28,7 @@ var options = {
   //cert: fs.readFileSync(__dirname + '/keys/cert.pem'),	
   rejectUnauthorized: false,
 	requestCert: true,
-	noDelay: false								// true: turn Nagle tcp batching off.
+	noDelay: true								// true: turn Nagle tcp batching off.
 };
 
 
@@ -58,16 +58,54 @@ process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
 
 // message sending.
-var buf = new Buffer(Array(size).join('a'));
+var mgs = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqr';
+//var buf = new Buffer(Array(size).join('a'));
+var buf = new Buffer(mgs);
 console.log('sending %d byte messages', buf.length);
 console.log('my pid: ' + process.pid);
 
+var blob = new Buffer(65536 - 20 - 20);		// 65529
+//var blobbuf = new Buffer(0);
+var blobarr = [];
+var bloblen = 0;
+var overflow = false;
+
+
+//var testamp = smp.encode([ new Buffer('abcdefghijklmnopqrstuvwxyz') ], {max_message_size: 77536});
+//console.log('testamp', testamp);
+
+
+
+
+// batch up smp events to make mss full when write to tcp.
+var batchedbufsArray = [];
+var batchedbufsSize = 0;
+for ( var b = 0; b < 316; b++ ) {		// 316
+	var msgArray = smp.encode([ buf ], {max_message_size: 77536});
+	batchedbufsSize += msgArray.frames[0].length;
+	batchedbufsArray.push(msgArray.frames[0]);
+}
+//console.log('batchedbufsSize', batchedbufsSize);
+var batchedbufs = new Buffer(batchedbufsSize);
+batchedbufs = Buffer.concat(batchedbufsArray, batchedbufsSize); 
+console.log('batchedbufs', batchedbufs.length);			
+
+/*
+var fs = require('fs');
+fs.writeFile(__dirname + "/dump", batchedbufs, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+}); 
+*/
 
 var server = nws.createServer(options, function(socket) {
 
 	preview('client connected');
 
-	var mtucontoller = new mtuc({mtu: 8985, noDelay: false}, socket);
+	//var mtucontoller = new mtuc({mtu: 65536 - 20 - 20, noDelay: false}, socket);
 
 	socket.setKeepAlive(true);
 
@@ -79,29 +117,73 @@ var server = nws.createServer(options, function(socket) {
 	});
 
 	socket.on('drain', function() {
+		//console.log('drain');
+		overflow = false;
   	socket.resume();
 	});			
 	
+
+	
 	function more() {
 
+		//console.log('more...');
+
 			if ( socket.writable && socket.handshaked ) {
-		
+	
 					if ( !socket.isPaused() ) {
 
-						var msgArray = smp.encode([ buf ], {max_message_size: 8999});
-						if ( !msgArray ) {
-							console.log('msgArray error, ran out of ids');
-							process.exit(0);
-						}
+						//var msgArray = smp.encode([ buf ], {max_message_size: 77536});
+						//var msgArray = smp.encode([ buf ], {max_message_size: 77536});
+						//if ( !msgArray ) {
+						//	console.log('msgArray error, ran out of ids');
+						//	process.exit(0);
+						//}
 
-						for ( var t = 0; t < 10; t++ ) {		// sending 10 per ticks.
+						for ( var t = 0; t < 15; t++ ) {		// sending t per tick.
 						
-							x += msgArray.frames.length;
-							var overflow = mtucontoller.send(msgArray.frames[0]);
+							//x += msgArray.frames.length;
+
+							//var overflow = mtucontoller.send(msgArray.frames[0]);
+							
+							
+							//var eventbuf = msgArray.frames[0];
+							//console.log('eventbuf', eventbuf);
+							
+							//var msgArray = smp.encode([ new Buffer('12345') ], {max_message_size: 77536});
+							//console.log(msgArray.frames[0]);
+	
+							//var msgArray2 = smp.encode([ new Buffer('XYZ') ], {max_message_size: 77536});							
+							//var multieventBlobs = Buffer.concat([msgArray.frames[0], msgArray2.frames[0]], msgArray.frames[0].length + msgArray2.frames[0].length);
+
+							//var overflow = socket.write(msgArray.frames[0]);
+
+							//var overflow = mtucontoller.send(batchedbufs);
+							//var overflow = socket.write(multieventBlobs);
+							
+							
+							
+							//var msgArray = smp.encode([ buf ], {max_message_size: 77536});
+							//overflow = socket.write(batchedbufs);
+
+							
+							var msgArray = smp.encode([ buf ], {max_message_size: 77536});
+							blobarr.push(msgArray.frames[0]);
+							bloblen += msgArray.frames[0].length;
+							if ( bloblen > 65436 - 20 - 20 ) {
+								var bufwrite = Buffer.concat(blobarr, bloblen);
+								overflow = socket.write( bufwrite );
+								//console.log('write and reset, overflow', overflow);
+								bloblen = 0;
+								blobarr = [];
+							}
+							
+							
+							//var overflow = socket.write(blob);
 
 						}
-						if ( !overflow ) {
-
+						
+						if ( overflow ) {
+							//console.log('pause');
 							socket.pause();
 						}
 						

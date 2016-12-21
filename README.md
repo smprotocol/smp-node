@@ -23,6 +23,7 @@ SMP makes frames of large or never ending messages efficiently sized to best fit
 frames are assigned a unique ID and order number. This approach allows asynchronously sent frames - 
 you could even send frames to different receivers, to be reassembled later.
 
+_SMP-Protocol-Version: 1.1._
 
 ## Installation
 
@@ -121,7 +122,7 @@ _To read the [Streaming Message Protocol Specification](http://smprotocol.github
 
 ```
 +------+-------------------+-----------------------------------------------------------------------+
-| CODE | DESCRIPTION       | NOTES                                                                 |
+| FLAG | DESCRIPTION       | NOTES                                                                 |
 +------+-------------------+-----------------------------------------------------------------------+
 |    0 | WHOLE MESSAGE     | Payload data, a whole complete MESSAGE, when ARGUMENTS PAYLOAD size < | 
 |      |                   | MAX-MESSAGE-SIZE.                                                     |
@@ -139,25 +140,24 @@ _To read the [Streaming Message Protocol Specification](http://smprotocol.github
 +------+-------------------+-----------------------------------------------------------------------+
 |    6 | HEARTBEAT         | Heartbeat, with optional PAYLOAD data.                                |
 +------+-------------------+-----------------------------------------------------------------------+
-|    7 | STOP              | Action, stop sending or receiving MESSAGES or FRAMES, will            |
-|      |                   | immediately close socket connection.                                  |
+|    7 | STOP              | Action, stop sending or receiving payload data, will immediately      |
+|      |                   | close any socket connection.                                          |
 +------+-------------------+-----------------------------------------------------------------------+
-|    8 | PAUSE             | Action, pause sending or receiving MESSAGES or FRAMES.                |
+|    8 | PAUSE             | Action, pause sending or receiving payload data.                      |
 +------+-------------------+-----------------------------------------------------------------------+
-|    9 | RESUME            | Action, resume sending or receiving MESSAGES or FRAMES, with optional |
-|      |                   | PAYLOAD data.                                                         |
+|    9 | RESUME            | Action, resume sending or receiving payload data.                     |
 +------+-------------------+-----------------------------------------------------------------------+
-|   10 | RESERVED          | Reserved for future versions.                                         |
+|   10 | CHECKPOINT        | Information, a list of sequence number(s) of committed objects.       |
 +------+-------------------+-----------------------------------------------------------------------+
-|   11 | RESERVED          | Reserved for future versions.                                         |
+|   11 | NAMESPACE         | Namespace, a message type of any custom name.                         |
 +------+-------------------+-----------------------------------------------------------------------+
-|   12 | RESERVED          | Reserved for future versions.                                         |
+|   12 | BLOCK             | Payload data wrapper, a list of payload data (as EG, CODE: 0,1,2,3).  |
 +------+-------------------+-----------------------------------------------------------------------+
-|   13 | USER DEFINED      | User can set their own custom code.                                   |
+|   13 | ROW               | Payload data wrapper, a list of BLOCKs.                               |
 +------+-------------------+-----------------------------------------------------------------------+
-|   14 | USER DEFINED      | User can set their own custom code.                                   |
+|   14 | SUPER             | Super Protocol, build a custom higher-level messaging protocol.       |
 +------+-------------------+-----------------------------------------------------------------------+
-|   15 | USER DEFINED      | User can set their own custom code.                                   |
+|   15 | RESERVED          | Reserved for future versions.                                         |
 +------+-------------------+-----------------------------------------------------------------------+
 ```
 
@@ -174,6 +174,10 @@ Encode options.
          complete: boolean,  // if true and frames, frame[frames.length] will be last frame (CODE:3).
           toFrame: boolean   // if true will be frame even when size less than max_message_size.
 ```
+
+## Extentions
+
+The Streaming Message Protocol allows extentions. These are not defined by using first nibble flags, but some other method of identification such as file extention.
 
 
 ## Benchmarking

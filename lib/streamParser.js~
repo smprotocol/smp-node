@@ -241,7 +241,7 @@ StreamParser.prototype._write = function(chunk, encoding, next){
         // ARGUMENT length.
         if ( 2 === this.x ) {
           this.arglen = ((this.lenbuf[0] << 8) + (this.lenbuf[1])) >>> 0; 		// equivalent to readUInt16BE.
-          //console.log('this.arglen: ' + this.arglen);
+          console.log('this.arglen: ' + this.arglen);
           if ( this.arglen > this.max_arglen ) {
             this.emit('err', 'argument length exceed max_arglen! send client error.code:414.');   // emitting 'err', not 'error' so can carry on.
             // reset

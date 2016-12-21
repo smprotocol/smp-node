@@ -848,7 +848,7 @@ Message.prototype.namespace = function (name, args) {
   // set name as first argument.
   args.unshift(new Buffer(name.toString()));
 
-  //console.log('args', args);
+  console.log('args', args);
   
   var argc = args.length;
   var len = 0;

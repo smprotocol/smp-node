@@ -14,13 +14,8 @@
 var preview = require('preview')('socket_sub');
 var humanize = require('humanize-number');
 var argv = require('minimist')(process.argv.slice(2));
-var nws = require('naked-websocket');
-
-
-var util = require('util');		// just to inspect, remove latter.
-var smp = require('..');
-
-
+//var nws = require('naked-websocket');
+var net = require('net');
 var babar = require('babar');
 var colors = require('colors');
 //var fs = require('fs');
@@ -28,18 +23,18 @@ var smp = require('..');
 var stream = smp.StreamParser;
 
 
-var parser = new stream({ returnEventOnly: true });
+var parser = new stream();
 
 var options = {
-	protocol: 'ws',					// or 'wss' for secure.
+	//protocol: 'ws',					// or 'wss' for secure.
 	//key: fs.readFileSync(__dirname + '/keys/key.pem'),
   //cert: fs.readFileSync(__dirname + '/keys/cert.pem'),
-  rejectUnauthorized: false,
-	requestCert: true,
-	hostname: '127.0.0.1',
+  //rejectUnauthorized: false,
+	//requestCert: true,
+	//hostname: '127.0.0.1',
   port: 8888,
-	path: '/foo/bar/',
-	codec: 'smp'			// headers.content-type.application
+	//path: '/foo/bar/',
+	//codec: 'smp'			// headers.content-type.application
 };
 
 if ( argv.transport ) {
@@ -52,9 +47,6 @@ console.log('my pid: ' + process.pid);
 var n = 0;
 var ops = 10000;
 var bytes = 201;
-var chunks = 0;
-var bytestotal = 0;
-var payloadtotal = 0;
 var prev = 0;
 var start = 0;
 var results = [];
@@ -63,33 +55,18 @@ var x = 0;
 var persec = 0;
 
 
-var client = nws.connect(options, function(socket) {
+var client = net.connect(options, function() {
 
 	preview('client connected');
 
-	socket.setKeepAlive(true);
-
-	socket.on('data', function(chunk) {
-		chunks++;
-		bytestotal += chunk.length;
-	});
+	//socket.setKeepAlive(true);
 
 
 
- 	socket.pipe(parser);
+ 	client.pipe(parser);
 
-	var data = function(event) {
-
-		//console.log('event: ' + util.inspect(event, true, 99, true));
-		//console.log('--------------');
-		//process.exit(0);
-		
-		//var smp_decoded = smp.decode(event.smp_blob);
-		//console.log('smp_decoded: ' + util.inspect(smp_decoded, true, 99, true));
-
-		//payloadtotal += event.smp_blob;
-		payloadtotal += event.args[0].length;
-		
+	var data = function(message) {
+	
 		if ( start === 0 ) {
 			start = Date.now();
 			prev = start;
@@ -104,7 +81,8 @@ var client = nws.connect(options, function(socket) {
 		}   		
 	};
 
-	parser.on('event', data);
+	parser.on('message', data);
+	parser.on('frame', data);
 
 	parser.on('err', function(err) {
 		console.log('err', err);
@@ -126,12 +104,7 @@ function done(){
   process.stdout.write('|     median: '); process.stdout.write(humanize(median(results)).bold + ' ops/s\n'.bold);
   console.log('|       mean: %s ops/s', humanize(avg | 0));
   console.log('|      total: %s ops in %ds', humanize(n), ms / 1000);
-  console.log('|    packets: %d chunks', chunks);
-  console.log('|     packet: %d bytes/packet', (bytestotal / chunks).toFixed(2));   
-  console.log('|       mean: %d bytes/event', (payloadtotal / n).toFixed(0));  
-  console.log('|      total: %d MB payload', ((payloadtotal) / 1000 / 1000).toFixed(2)); 
-  console.log('|      total: %d MB', ((bytestotal) / 1000 / 1000).toFixed(2));
-  console.log('| throughput: %d MB/s', ((avg * payloadtotal/n) / 1000 / 1000).toFixed(2));
+  console.log('|    through: %d MB/s', ((avg * bytes) / 1000 / 1000).toFixed(2));
   console.log('---------------------------------------------');
   console.log('| OPERATIONS PER SECOND OVER TIME ~');
   console.log('---------------------------------------------');
