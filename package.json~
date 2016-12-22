@@ -1,7 +1,7 @@
 {
   "name": "smp",
   "description": "Streaming Message Protocol.",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "main": "index.js",
   "homepage": "https://github.com/smprotocol/smp-node",
   "author": "Mark W. B. Ashcroft <mark@fluidecho.com> (http://fluidecho.com)",
@@ -9,7 +9,8 @@
     "Mark W. B. Ashcroft <mark@fluidecho.com>"
   ],
   "dependencies": {
-    "preview": "~0.1.1"
+    "nan": "^2.1.0",
+    "preview": "0.1.1"
   },
   "devDependencies": {},
   "repository": {
@@ -18,10 +19,10 @@
   },
   "bugs": {
     "url": "http://github.com/smprotocol/smp-node/issues",
-    "email": "mail@fluidecho.com"
+    "email": "bugs@fluidecho.com"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.12.0"
   },
   "license": "MIT",
   "keywords": [
