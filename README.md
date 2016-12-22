@@ -25,6 +25,8 @@ you could even send frames to different receivers, to be reassembled later.
 
 _SMP-Protocol-Version: 1.1._
 
+*TODO: fix and finsih frames support.*
+
 ## Installation
 
 ```
