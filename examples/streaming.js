@@ -6,8 +6,8 @@
 // Author: Mark W. B. Ashcroft (mark [at] fluidecho [dot] com)
 // License: MIT or Apache 2.0.
 //
-// Copyright (c) 2015 Mark W. B. Ashcroft.
-// Copyright (c) 2015 FluidEcho.
+// Copyright (c) 2015-2017 Mark W. B. Ashcroft.
+// Copyright (c) 2015-2017 FluidEcho.
 //
 
 
@@ -25,11 +25,11 @@ var server = net.createServer(function(sock){
   // can use parser.on( 'frame', 'message', 'err', 'errorMessage', 'information', etc.
 
   parser.on('frame', function(frame){
-    preview('frame', frame);  
-  });  
+    preview('frame', frame);
+  });
 
   sock.pipe(parser);
-  
+
 });
 
 server.listen(8888);
@@ -41,4 +41,3 @@ var framed = smp.encode([ new Buffer('0123456789'), new Buffer('abcdefghijklmnop
 preview('framed', framed);
 
 client.write(framed.toBuffer());
-
